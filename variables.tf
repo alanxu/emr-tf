@@ -1,14 +1,19 @@
 variable "project" {
-  default = "Unknown"
+  default = "alan-poc"
 }
 
 variable "environment" {
-  default = "Unknown"
+  default = "dev"
 }
 
 variable "name" {
   default = "my-emr-1"
 }
+
+variable "region" {
+  default = "us-east-1"
+}
+
 
 variable "vpc_id" {
   default = "vpc-01373d642560468d7"
@@ -82,5 +87,5 @@ variable "bootstrap_args" {
 }
 
 variable "log_uri" {
-  default = ""
+  default = "s3n://alan-1/logs/emr"
 }

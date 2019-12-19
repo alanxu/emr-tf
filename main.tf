@@ -124,6 +124,16 @@ resource "aws_security_group" "emr_svc_access" {
   }
 }
 
+
+# Create EMR bootstrap action
+module "bootstrap" {
+  source = "./modules/bootstrap"
+
+  cluster_name                = "${var.name}"
+  region                      = "${var.region}"
+  env                         = "${var.environment}"
+}
+
 #
 # EMR resources
 #
@@ -157,13 +167,13 @@ resource "aws_emr_cluster" "cluster" {
     }
   }
 
-  # bootstrap_action {
-  #   path = "${var.bootstrap_uri}"
-  #   name = "${var.bootstrap_name}"
-  #   args = "${var.bootstrap_args}"
-  # }
+  bootstrap_action {
+    path = "${module.bootstrap.bootstrap_script_s3_object}"
+    name = "configure_system"
+    # args = "${var.bootstrap_args}"
+  }
 
-  # log_uri      = "${var.log_uri}"
+  log_uri      = "${var.log_uri}"
   service_role = "${aws_iam_role.emr_service_role.arn}"
 
   tags = {
